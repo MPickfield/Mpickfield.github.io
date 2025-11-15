@@ -1,0 +1,24 @@
+# Site settings
+title: Michael Pickfield
+description: Personal blog and portfolio
+email: # your-email@example.com
+url: https://pickfield.ca
+baseurl: "" # the subpath of your site, e.g. /blog
+
+# Build settings
+markdown: kramdown
+theme: jekyll-theme-midnight  # Uncomment and add theme gem to Gemfile when you choose a theme
+# plugins:
+#   - jekyll-feed
+#   - jekyll-seo-tag
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+
