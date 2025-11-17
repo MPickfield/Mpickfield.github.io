@@ -36,12 +36,20 @@
   </head>
 
   <body>
+    <div id="header">
+      <nav>
+        <ul>
+          <li>
+            <a href="{{ '/' | relative_url }}" class="back-link">
+              <i class="fas fa-home"></i> Home
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
     <div class="wrapper">
       <section>
         <div class="post-title-section">
-          <a href="{{ '/' | relative_url }}" class="back-link">
-            <i class="fas fa-arrow-left"></i> Back to home
-          </a>
           <h1 class="post-title">{{ page.title }}</h1>
           <p class="post-date-subtitle">
             Mike Pickfield, {{ page.date | date: "%B %d, %Y" }}

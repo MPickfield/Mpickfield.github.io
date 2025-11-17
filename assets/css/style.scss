@@ -3,20 +3,28 @@
 
 @import "{{ site.theme }}";
 
+// Variables
+$link-color: #ffcc00;
+$link-hover-color: #ffeb9b;
+$text-gray: #696969;
+$text-light-gray: #999;
+$font-family-base: "OpenSansRegular", "Helvetica Neue", Helvetica, Arial,
+  sans-serif;
+
 .post-date {
   font-style: italic;
   font-size: 11px;
-  font-family: "OpenSansRegular", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: $font-family-base;
   font-weight: normal;
-  color: #696969;
+  color: $text-gray;
 }
+
 footer {
   .credits {
     font-size: 11px;
-    font-family: "OpenSansRegular", "Helvetica Neue", Helvetica, Arial,
-      sans-serif;
+    font-family: $font-family-base;
     font-weight: normal;
-    color: #696969;
+    color: $text-gray;
     margin-top: -10px;
 
     span.credits.left {
@@ -30,6 +38,31 @@ footer {
 }
 
 // Post layout styles
+#header {
+  nav {
+    background: transparent;
+  }
+
+  nav ul li a {
+    color: $link-color;
+    font-weight: 400;
+    text-decoration: none;
+    border: none;
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    display: inline;
+
+    &:hover {
+      color: $link-hover-color;
+      background: none;
+      border: none;
+      box-shadow: none;
+    }
+  }
+}
+
 #header.post-header {
   padding: 10px 0;
   min-height: auto;
@@ -45,14 +78,20 @@ footer {
     padding: 0;
 
     a {
-      color: #fff;
+      color: $link-color;
       text-decoration: none;
       font-size: 14px;
-      padding: 5px 10px;
+      padding: 0;
       display: inline-block;
+      border: none;
+      background: none;
+      box-shadow: none;
 
       &:hover {
-        opacity: 0.8;
+        color: $link-hover-color;
+        background: none;
+        border: none;
+        box-shadow: none;
       }
     }
   }
@@ -64,12 +103,12 @@ footer {
   .back-link {
     display: inline-block;
     margin-bottom: 20px;
-    color: #ffcc00;
+    color: $link-color;
     text-decoration: none;
     font-size: 14px;
 
     &:hover {
-      color: #ffeb9b;
+      color: $link-hover-color;
       text-decoration: none;
     }
 
@@ -85,7 +124,7 @@ footer {
   }
 
   .post-date-subtitle {
-    color: #696969;
+    color: $text-gray;
     font-size: 16px;
     margin: 0 0 20px 0;
     font-style: italic;
@@ -106,7 +145,7 @@ figure {
   .image-caption {
     font-style: italic;
     font-size: 0.875em;
-    color: #999;
+    color: $text-light-gray;
     font-weight: 300;
     margin-top: 0.5em;
     text-align: center;
