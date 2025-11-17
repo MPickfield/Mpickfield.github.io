@@ -9,7 +9,7 @@ It's often touted that _code is read many more times than it is written_, so we 
 The thing is that for most of human history, we haven't read much code at all, we've read _stories_. Compared to code, stories are much easier for us to digest. A good story can be easy to follow and gripping, giving us just the right amount of information we need at each turn to keep us going. By the end we've internalized its plot and characters by the sum of their actions and experiences. When we successfully read code, we find something similar: we internalize what it does and why by the sum of its business logic and abstractions.
 
 <figure>
-  <img src="/assets/images/hobbit-riddles.png" alt="Bilbo and Gollum exchange riddles in 'the Hobbit (1977)'">
+  <img src="/assets/images/hobbit-riddles.jpg" alt="Bilbo and Gollum exchange riddles in 'the Hobbit (1977)'">
   <figcaption class="image-caption">
   You wouldn't mention the contents of a character's pocket if it didn't matter to the story
   </figcaption>
