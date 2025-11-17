@@ -7,7 +7,24 @@ layout: default
   <p>{{ site.description }}</p>
 
   <h2>Recent Posts</h2>
+  {% if site.posts.size > 0 %} {% for post in site.posts limit: 10 %}
+  <div class="post-preview">
+    <h3 class="post-title">{{ post.title }}</h3>
+    <p class="post-date">{{ post.date | date: "%B %d, %Y" }}</p>
+    <p class="post-excerpt">
+      {% if post.excerpt %} {{ post.excerpt | strip_html | truncatewords: 50 }}
+      {% else %} {{ post.content | strip_html | truncatewords: 50 }} {% endif %}
+    </p>
+    <p>
+      <a href="{{ post.url | relative_url }}"
+        >Read more <i class="fas fa-arrow-right"></i
+      ></a>
+    </p>
+    <hr />
+  </div>
+  {% endfor %} {% else %}
   <p>Check back soon...</p>
+  {% endif %}
 
   <h2>Contact</h2>
   <p>
