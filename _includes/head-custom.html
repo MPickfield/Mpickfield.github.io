@@ -29,3 +29,18 @@
   href="{{ 'feed.xml' | relative_url }}"
 />
 
+<!-- Person schema for name-based SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Michael Douglas Stokes Bertrand-Pickfield",
+  "alternateName": ["Michael Bertrand-Pickfield", "Michael Pickfield", "Mike Pickfield"],
+  "url": "{{ site.url }}{{ site.baseurl }}",
+  "description": {{ site.description | strip_newlines | jsonify }},
+  "sameAs": [
+    {% for link in site.social.links %}"{{ link }}"{% unless forloop.last %}, {% endunless %}{% endfor %}
+  ]
+}
+</script>
+

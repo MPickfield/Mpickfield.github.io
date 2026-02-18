@@ -1,5 +1,6 @@
 # Site settings
 title: Mike Pickfield
+display_name: Mike Pickfield
 tagline: Thoughts and ramblings
 description: |
   Mike is a Philosopher who daylights as a software engineer in Toronto, Canada.
@@ -9,11 +10,25 @@ email: mike@pickfield.ca
 url: https://pickfield.ca
 baseurl: "" # the subpath of your site, e.g. /blog
 
+# Author (for jekyll-seo-tag meta/OG; full name for searchability, display_name for bylines)
+author:
+  name: Michael Douglas Stokes Bertrand-Pickfield
+  url: https://pickfield.ca
+
+# Social links (for site links / knowledge panel)
+social:
+  name: Michael Douglas Stokes Bertrand-Pickfield
+  links:
+    - https://www.linkedin.com/in/michael-bertrand-pickfield-3b6a22108/
+    - https://github.com/mpickfield
+    - mailto:mike@pickfield.ca
+
 # Build settings
 markdown: kramdown
 theme: jekyll-theme-midnight # Uncomment and add theme gem to Gemfile when you choose a theme
 plugins:
   - jekyll-feed
+  - jekyll-sitemap
 
 # Exclude from processing
 exclude:

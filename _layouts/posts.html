@@ -52,7 +52,7 @@
         <div class="post-title-section">
           <h1 class="post-title">{{ page.title }}</h1>
           <p class="post-date-subtitle">
-            Mike Pickfield, {{ page.date | date: "%B %d, %Y" }}
+            {{ site.display_name | default: site.title }}, {{ page.date | date: "%B %d, %Y" }}
           </p>
           <hr />
         </div>
@@ -67,7 +67,7 @@
             href="{{ site.github.owner_url | default: 'https://github.com/mpickfield' }}"
           >
             <i class="fas fa-pencil-alt"></i>
-            {{ site.github.owner_name | default: "Mike Pickfield"}}
+            {{ site.display_name | default: site.title }}
           </a>
           ·
           <a href="{{ 'feed.xml' | relative_url }}" title="RSS feed"
