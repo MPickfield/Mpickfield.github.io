@@ -12,9 +12,8 @@ baseurl: "" # the subpath of your site, e.g. /blog
 # Build settings
 markdown: kramdown
 theme: jekyll-theme-midnight # Uncomment and add theme gem to Gemfile when you choose a theme
-# plugins:
-#   - jekyll-feed
-#   - jekyll-seo-tag
+plugins:
+  - jekyll-feed
 
 # Exclude from processing
 exclude:
