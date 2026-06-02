@@ -1,46 +1,14 @@
-<!-- Favicon and App Icons -->
-<link rel="icon" type="image/x-icon" href="{{ '/assets/icon/favicon.ico' | relative_url }}" />
-<link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/icon/favicon-16x16.png' | relative_url }}" />
-<link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/icon/favicon-32x32.png' | relative_url }}" />
-<link rel="icon" type="image/png" sizes="96x96" href="{{ '/assets/icon/favicon-96x96.png' | relative_url }}" />
-
-<!-- Apple Touch Icons -->
-<link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/icon/apple-icon-180x180.png' | relative_url }}" />
-
-<!-- Android Icons -->
-<link rel="icon" type="image/png" sizes="192x192" href="{{ '/assets/icon/android-icon-192x192.png' | relative_url }}" />
-
-<!-- Web App Manifest -->
-<link rel="manifest" href="{{ '/manifest.json' | relative_url }}" />
-
-<!-- Microsoft Tile Icons -->
-<meta name="msapplication-TileColor" content="#ffffff" />
-<meta name="msapplication-TileImage" content="{{ '/assets/icon/ms-icon-144x144.png' | relative_url }}" />
-<meta name="msapplication-config" content="{{ '/browserconfig.xml' | relative_url }}" />
-
-<!-- Theme Color -->
-<meta name="theme-color" content="#ffffff" />
-
-<!-- RSS / Atom feed -->
-<link
-  rel="alternate"
-  type="application/atom+xml"
-  title="{{ site.title }}"
-  href="{{ 'feed.xml' | relative_url }}"
-/>
-
-<!-- Person schema for name-based SEO -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "name": "Michael Douglas Stokes Bertrand-Pickfield",
-  "alternateName": ["Michael Bertrand-Pickfield", "Michael Pickfield", "Mike Pickfield"],
-  "url": "{{ site.url }}{{ site.baseurl }}",
-  "description": {{ site.description | strip_newlines | jsonify }},
-  "sameAs": [
-    {% for link in site.social.links %}"{{ link }}"{% unless forloop.last %}, {% endunless %}{% endfor %}
-  ]
+<style scoped>
+/* Center images with class "center" */
+img.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
-</script>
 
+/* Also make it responsive - max-width 100% of container */
+img.center {
+  max-width: 100%;
+  height: auto;
+}
+</style>

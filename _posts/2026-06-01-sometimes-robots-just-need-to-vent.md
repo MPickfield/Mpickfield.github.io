@@ -7,7 +7,7 @@ date: 2026-06-01 12:00:00 -0500
 I've written a lot of code in my day, and I've rewritten a lot more. It is seldom my intention to refactor something, but as a believer in the "boy scout principle," I try to leave things better than I found them. I'll find something misleading, or discover a module that has multiple concerns involved, or just scratch my head for too long trying to figure out what the heck is going on, and I'll "fix" it in hopes the next person has an easier go of things.
 
 <figure>
-  <img src="/assets/images/marvin.jpg" alt="I'd make a suggestion but you wouldn't listen">
+  <img src="/assets/images/marvin.jpg" alt="I'd make a suggestion but you wouldn't listen" class="center">
   <figcaption class="image-caption">
       Who asked anyways?
   </figcaption>
