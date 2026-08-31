@@ -9,6 +9,10 @@ echo "🚀 Starting Jekyll dev server..."
 echo "📂 Project: $(basename "$SCRIPT_DIR")"
 echo ""
 
+echo "🧹 Clearing incremental build cache..."
+rm -rf .jekyll-cache .jekyll-metadata _site
+echo ""
+
 bundle exec jekyll serve \
     --livereload \
     --incremental \
