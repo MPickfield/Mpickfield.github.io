@@ -1,0 +1,891 @@
+/* Scrabble Dojo — Game styles (dark, minimal, mobile-first) */
+
+.dojo-app {
+  margin-top: 24px;
+}
+
+/* ---------- Header ---------- */
+.dojo-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.dojo-header-title {
+  min-width: 0;
+}
+
+.dojo-header h1 {
+  margin: 0 0 4px 0;
+  font-size: 1.9em;
+  color: #ffcc00;
+}
+
+.dojo-subtitle {
+  color: #999;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ---------- Menu ---------- */
+.dojo-menu-wrap {
+  position: relative;
+  flex: none;
+}
+
+.dojo-menu-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid #33333f;
+  background: #1a1a26;
+  color: #ccc;
+  font-size: 16px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.12s ease, border-color 0.12s ease;
+}
+
+.dojo-menu-btn:hover {
+  color: #ffcc00;
+  border-color: #4a4a5a;
+}
+
+.dojo-menu {
+  display: none;
+  position: absolute;
+  top: 46px;
+  right: 0;
+  min-width: 176px;
+  padding: 6px;
+  border: 1px solid #33333f;
+  border-radius: 10px;
+  background: #23232f;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+  z-index: 50;
+}
+
+.dojo-menu.open {
+  display: block;
+}
+
+.dojo-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #eee;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dojo-menu-item:hover {
+  background: #2e2e3d;
+}
+
+.dojo-menu-item i {
+  width: 16px;
+  text-align: center;
+  color: #ffcc00;
+}
+
+/* ---------- Progress ---------- */
+.dojo-progress {
+  margin-bottom: 20px;
+}
+
+.dojo-progress-text {
+  font-size: 14px;
+  color: #ddd;
+  margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.dojo-progress-text strong {
+  color: #ffcc00;
+}
+
+.progress-bar {
+  height: 8px;
+  border-radius: 6px;
+  background: #1d1d2b;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0;
+  background: #ffcc00;
+  border-radius: 6px;
+  transition: width 0.25s ease;
+}
+
+/* ---------- Found words ---------- */
+.dojo-found {
+  margin-bottom: 22px;
+}
+
+.dojo-found-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.dojo-found h2 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #999;
+  margin: 0;
+}
+
+.dojo-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+}
+
+.hint-count {
+  font-size: 12px;
+  color: #999;
+  font-variant-numeric: tabular-nums;
+}
+
+.hint-btn {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 33px;
+  padding: 0 12px;
+  border: 2px dashed #33333f;
+  border-radius: 999px;
+  background: #23232f;
+  color: #8a8a8a;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.12s ease;
+}
+
+.hint-btn:hover {
+  color: #b5b5b5;
+}
+
+.found-group {
+  margin-bottom: 12px;
+}
+
+.found-group-header {
+  font-size: 12px;
+  color: #777;
+  margin: 0 0 6px 0;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.found-group-count {
+  color: #ffcc00;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 33px; /* reserve one row so the page doesn't jump when the first pill appears */
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: 33px; /* fixed height so an empty row reserves exactly the same space */
+  padding: 0 12px;
+  border: 2px solid #33333f;
+  border-radius: 999px;
+  background: #23232f;
+  color: #eee;
+  font-size: 14px;
+  font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.chip:focus {
+  outline: none;
+}
+
+.chip:focus-visible {
+  outline: 2px solid #ffcc00;
+  outline-offset: 2px;
+}
+
+.chip.chip-hint {
+  border-style: dashed;
+  color: #9a9a9a;
+  letter-spacing: 2px; /* separate the underscore positions */
+}
+
+.chip.chip-word {
+  cursor: pointer;
+}
+
+.chip.chip-word:hover {
+  border-color: #ffcc00;
+  color: #ffcc00;
+}
+
+.chip.chip-best {
+  border-color: #8bc34a;
+}
+
+.chip.chip-best:hover {
+  border-color: #8bc34a;
+}
+
+.chip.chip-hint-live {
+  cursor: pointer;
+}
+
+.chip.chip-hint-live:hover {
+  border-color: #ffcc00;
+  color: #ffcc00;
+}
+
+.chip.chip-hint-done {
+  cursor: pointer;
+}
+
+.chip.chip-flash {
+  animation: dojo-chip-flash 0.4s ease;
+}
+
+@keyframes dojo-chip-flash {
+  0%   { transform: translateX(0); border-color: #ffcc00; }
+  20%  { transform: translateX(-5px); }
+  40%  { transform: translateX(5px); }
+  60%  { transform: translateX(-3px); }
+  80%  { transform: translateX(3px); }
+  100% { transform: translateX(0); border-color: #33333f; }
+}
+
+.chip.chip-shake-no {
+  animation: dojo-chip-shake-no 0.5s ease;
+}
+
+@keyframes dojo-chip-shake-no {
+  0%   { transform: translateX(0); border-color: #ff5c5c; }
+  10%  { transform: translateX(-8px); }
+  20%  { transform: translateX(8px); }
+  30%  { transform: translateX(-7px); }
+  40%  { transform: translateX(7px); }
+  50%  { transform: translateX(-5px); }
+  60%  { transform: translateX(5px); }
+  70%  { transform: translateX(-3px); }
+  80%  { transform: translateX(3px); }
+  90%  { transform: translateX(-1px); }
+  100% { transform: translateX(0); border-color: #33333f; }
+}
+
+.empty {
+  color: #666;
+  font-style: italic;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ---------- Board: tray + hand ---------- */
+.dojo-board {
+  position: sticky;
+  bottom: 0;
+  background: #1c1c1c; /* matches the theme's bottom gradient */
+  padding: 10px 0;
+  border-top: 1px solid #2a2a29;
+}
+
+.tray {
+  box-sizing: border-box;
+  min-height: 68px; /* one-row height, so it persists when empty; grows if tiles wrap */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border: 2px dashed #33333f;
+  border-radius: 10px;
+  background: #0c0c14;
+}
+
+.tray:empty::before {
+  content: 'Drag letters here to build a word';
+  color: #555;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Score readout sits between the tray and the hand; fixed height so the
+   layout never shifts when the value appears or disappears. */
+.tray-score-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 24px;
+}
+
+.tray-score {
+  font-size: 12px;
+  color: #ffcc00;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.tray-score-played {
+  color: #4ade80;
+}
+
+.hand {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* ---------- Tiles ---------- */
+.tile {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 6px;
+  box-sizing: border-box;
+  background: #f4efe2;
+  color: #262626;
+  font-family: inherit;
+  cursor: grab;
+  box-shadow: 0 3px 0 #b9b0a0, 0 5px 10px rgba(0, 0, 0, 0.35);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+  transition: box-shadow 0.08s ease;
+}
+
+.tile:hover {
+  box-shadow: 0 3px 0 #b9b0a0, 0 7px 14px rgba(0, 0, 0, 0.45);
+}
+
+.tile:active {
+  filter: brightness(0.96);
+}
+
+.tile .letter {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tile .value {
+  position: absolute;
+  right: 3px;
+  bottom: 2px;
+  font-size: 9px;
+  font-weight: 600;
+  color: #8a8577;
+}
+
+.tile-tray {
+  background: #fff8e7;
+}
+
+.tile.tile-blank {
+  background: #e7edf6;
+}
+
+.tile.tile-blank.tile-tray {
+  background: #edf2f9;
+}
+
+/* Drop placeholder ("preview") — thick white dashed border, lighter fill */
+.tile.tile-ghost {
+  background: rgba(244, 239, 226, 0.16);
+  border: 2px dashed #ffffff;
+  box-shadow: none !important;
+  cursor: grabbing;
+}
+
+.tile.tile-ghost .letter,
+.tile.tile-ghost .value {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Floating tile that follows the pointer — solid, lifted */
+.tile.tile-drag {
+  background: #fff8e7 !important;
+  border: 2px solid #ffcc00 !important;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55) !important;
+  opacity: 1 !important;
+  cursor: grabbing;
+}
+
+.tile.tile-drag .letter,
+.tile.tile-drag .value {
+  color: #262626 !important;
+}
+
+/* Original tile while lifted (hidden by SortableJS by default) */
+.tile.tile-chosen {
+  opacity: 0;
+}
+
+/* ---------- Controls ---------- */
+.dojo-controls {
+  margin-top: 16px;
+}
+
+.controls-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.controls-row button {
+  flex: 1;
+  min-height: 44px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid #33333f;
+  background: #1a1a26;
+  color: #eee;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.controls-row button:hover {
+  background: #23232f;
+  border-color: #4a4a5a;
+}
+
+.controls-row button.primary {
+  background: #ffcc00;
+  border-color: #ffcc00;
+  color: #111;
+  font-weight: 700;
+}
+
+.controls-row button.primary:hover {
+  background: #ffeb9b;
+  border-color: #ffeb9b;
+}
+
+.controls-row button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.controls-row button.primary:disabled {
+  opacity: 0.4;
+}
+
+.controls-row.secondary button {
+  flex: 1;
+  min-height: 40px;
+  font-size: 13px;
+  background: transparent;
+  color: #ccc;
+  border-color: #2a2a38;
+}
+
+.controls-row.secondary button:hover {
+  color: #ffcc00;
+  border-color: #4a4a5a;
+}
+
+/* ---------- Success ---------- */
+.success {
+  display: none;
+  margin: 18px 0 0 0;
+  padding: 14px 16px;
+  border: 1px solid #ffcc00;
+  border-radius: 10px;
+  background: rgba(255, 204, 0, 0.08);
+  color: #eee;
+  font-size: 15px;
+}
+
+.success.show {
+  display: block;
+}
+
+.success strong {
+  color: #ffcc00;
+}
+
+/* ---------- Stats footer ---------- */
+.dojo-stats {
+  margin-top: 18px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+
+.dojo-stats-line {
+  margin: 0;
+}
+
+.dojo-stats-line strong {
+  color: #ffcc00;
+  font-variant-numeric: tabular-nums;
+}
+
+.dojo-daily-subtitle {
+  margin: 6px 0 0 0;
+  color: #8a8a8a;
+  font-size: 12px;
+}
+
+.dojo-daily-subtitle:empty {
+  display: none;
+}
+
+/* ---------- Toast ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translate(-50%, 20px);
+  max-width: 90%;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: #23232f;
+  border: 1px solid #33333f;
+  color: #eee;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  z-index: 100;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.toast.error {
+  background: #3a1d1d;
+  border-color: #6b2f2f;
+  color: #ffb3b3;
+}
+
+/* ---------- Word modal ---------- */
+.word-modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.word-modal[hidden] {
+  display: none;
+}
+
+.word-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: rgba(0, 0, 0, 0.62);
+  cursor: default;
+}
+
+.word-modal-card {
+  position: relative;
+  width: min(92%, 360px);
+  padding: 22px 20px 20px;
+  border: 1px solid #33333f;
+  border-radius: 14px;
+  background: #1c1c1c;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+.word-modal-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #999;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.word-modal-close:hover {
+  color: #fff;
+}
+
+.word-modal-word {
+  margin: 0 0 14px 0;
+  font-size: 1.7em;
+  font-weight: 700;
+  color: #ffcc00;
+  letter-spacing: 0.08em;
+}
+
+.word-modal-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.word-modal-tiles .tile {
+  width: 40px;
+  height: 40px;
+  cursor: default;
+  pointer-events: none;
+}
+
+.word-modal-tiles .tile .letter {
+  font-size: 19px;
+}
+
+.word-modal-tiles .tile .value {
+  font-size: 8px;
+}
+
+.word-modal-score {
+  margin: 0 0 16px 0;
+  color: #ccc;
+  font-size: 14px;
+}
+
+.word-modal-best {
+  margin: 0 0 12px 0;
+  color: #8bc34a;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.word-modal-best[hidden] {
+  display: none;
+}
+
+.word-modal-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid #33333f;
+  border-radius: 8px;
+  background: #23232f;
+  color: #ffcc00;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.word-modal-link:hover {
+  border-color: #ffcc00;
+  background: #2a2a38;
+}
+
+/* ---------- Hint modal ---------- */
+.hint-modal-title {
+  font-size: 1.25em;
+}
+
+.hint-modal-sub {
+  margin: 0 0 16px 0;
+  color: #999;
+  font-size: 14px;
+}
+
+.hint-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.hint-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #33333f;
+  border-radius: 8px;
+  background: #23232f;
+  color: #eee;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+
+.hint-option:hover {
+  border-color: #ffcc00;
+  background: #2a2a38;
+}
+
+.hint-option-count {
+  font-size: 13px;
+  color: #ffcc00;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.hint-modal-empty {
+  margin: 0;
+  color: #777;
+  font-size: 14px;
+}
+
+/* ---------- Custom hand modal ---------- */
+.custom-modal-title {
+  font-size: 1.25em;
+}
+
+.custom-modal-sub {
+  margin: 0 0 16px 0;
+  color: #999;
+  font-size: 14px;
+}
+
+.custom-input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #33333f;
+  border-radius: 8px;
+  background: #0c0c14;
+  color: #eee;
+  font-family: inherit;
+  font-size: 16px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.12s ease;
+}
+
+.custom-input:focus {
+  border-color: #ffcc00;
+}
+
+.custom-input::placeholder {
+  color: #555;
+  text-transform: none;
+  letter-spacing: 0.08em;
+}
+
+.custom-error {
+  margin: 10px 0 14px 0;
+  min-height: 18px;
+  color: #ffb3b3;
+  font-size: 13px;
+}
+
+.custom-submit {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 8px;
+  background: #ffcc00;
+  color: #111;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background 0.12s ease;
+}
+
+.custom-submit:hover {
+  background: #ffeb9b;
+}
+
+.custom-submit:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ---------- Shake ---------- */
+@keyframes dojo-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.tray.shake {
+  animation: dojo-shake 0.35s ease;
+}
+
+/* ---------- Mobile: full-bleed board, tighter padding ---------- */
+@media (max-width: 480px) {
+  .dojo-board {
+    margin-left: -20px; /* counteracts .wrapper's side padding */
+    margin-right: -20px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+/* ---------- Larger screens ---------- */
+@media (min-width: 480px) {
+  .tile {
+    width: 56px;
+    height: 56px;
+  }
+  .tile .letter {
+    font-size: 26px;
+  }
+  .tile .value {
+    font-size: 10px;
+  }
+  .tray {
+    min-height: 76px; /* 56px tile + 16px padding + 4px border */
+  }
+}

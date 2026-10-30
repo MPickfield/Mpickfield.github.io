@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en-US' }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    {% seo %}
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/css/scrabble-dojo.css' | relative_url }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    {% include head-custom.html %}
+  </head>
+
+  <body class="dojo-page">
+    <div id="header">
+      <nav>
+        <ul>
+          <li>
+            <a href="{{ '/' | relative_url }}" class="back-link">
+              <i class="fas fa-home"></i> Home
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="wrapper">
+      <section>
+        <main class="dojo-app">
+          <header class="dojo-header">
+            <div class="dojo-header-title">
+              <h1>Scrabble Dojo</h1>
+              <p class="dojo-subtitle">Anagram Trainer: find every word in your hand!</p>
+            </div>
+            <div class="dojo-menu-wrap" id="dojo-menu-wrap">
+              <button
+                type="button"
+                id="btn-menu"
+                class="dojo-menu-btn"
+                aria-label="Menu"
+                aria-haspopup="menu"
+                aria-expanded="false"
+              >
+                <i class="fas fa-bars"></i>
+              </button>
+              <div class="dojo-menu" id="dojo-menu" role="menu">
+                <button type="button" class="dojo-menu-item" id="btn-daily-game" role="menuitem">
+                  <i class="fas fa-calendar-day"></i> Daily game
+                </button>
+                <button type="button" class="dojo-menu-item" id="btn-new-game" role="menuitem">
+                  <i class="fas fa-redo"></i> New game
+                </button>
+                <button type="button" class="dojo-menu-item" id="btn-new-game-letters" role="menuitem">
+                  <i class="fas fa-keyboard"></i> New game with preset letters
+                </button>
+                <button type="button" class="dojo-menu-item" id="btn-toggle-blanks" role="menuitemcheckbox" aria-checked="false">
+                  <i class="far fa-square toggle-icon" aria-hidden="true"></i> Include blanks
+                </button>
+              </div>
+            </div>
+          </header>
+
+          <div class="dojo-progress">
+            <div class="dojo-progress-text">
+              <strong id="found-count">0</strong> / <span id="total-count">0</span> found
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+          </div>
+
+          <div class="dojo-found">
+            <div class="dojo-found-header">
+              <h2>Your words</h2>
+              <div class="dojo-hint">
+                <span class="hint-count" id="hint-count"></span>
+                <button type="button" id="btn-hint" class="hint-btn">+hint</button>
+              </div>
+            </div>
+            <div id="found-list"></div>
+          </div>
+
+          <div class="dojo-board">
+            <div class="tray" id="tray"></div>
+
+            <div class="tray-score-row">
+              <span class="tray-score" id="tray-score"></span>
+            </div>
+
+            <div class="hand" id="hand"></div>
+
+            <div class="dojo-controls">
+              <div class="controls-row">
+                <button type="button" id="btn-clear">Clear</button>
+                <button type="button" id="btn-shuffle">Shuffle</button>
+                <button type="button" id="btn-submit" class="primary">Play</button>
+              </div>
+            </div>
+
+            <div class="success" id="success">
+              <strong>Well done!</strong> You found all
+              <strong class="success-count">0</strong> words in this hand.
+            </div>
+          </div>
+
+          <div class="dojo-stats">
+            <p class="dojo-stats-line">You have completed <strong id="completed-count">0</strong> games.</p>
+            <p class="dojo-daily-subtitle" id="daily-subtitle"></p>
+          </div>
+        </main>
+      </section>
+    </div>
+
+    <div class="word-modal" id="word-modal" hidden>
+      <button
+        type="button"
+        class="word-modal-backdrop"
+        id="word-modal-backdrop"
+        aria-label="Close"
+      ></button>
+      <div
+        class="word-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="word-modal-word"
+      >
+        <button
+          type="button"
+          class="word-modal-close"
+          id="word-modal-close"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+        <div class="word-modal-word" id="word-modal-word"></div>
+        <div class="word-modal-tiles" id="word-modal-tiles"></div>
+        <div class="word-modal-score" id="word-modal-score"></div>
+        <div class="word-modal-best" id="word-modal-best" hidden>
+          This is the highest scoring word in your hand!
+        </div>
+        <a
+          class="word-modal-link"
+          id="word-modal-link"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View definition on Merriam-Webster
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="word-modal" id="hint-modal" hidden>
+      <button
+        type="button"
+        class="word-modal-backdrop"
+        id="hint-modal-backdrop"
+        aria-label="Close"
+      ></button>
+      <div
+        class="word-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="hint-modal-title"
+      >
+        <button
+          type="button"
+          class="word-modal-close"
+          id="hint-modal-close"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+        <div class="word-modal-word hint-modal-title" id="hint-modal-title">
+          Choose a length
+        </div>
+        <p class="hint-modal-sub">Reveal the first letter, then tap the hint to reveal more.</p>
+        <div class="hint-options" id="hint-options"></div>
+      </div>
+    </div>
+
+    <div class="word-modal" id="custom-modal" hidden>
+      <button
+        type="button"
+        class="word-modal-backdrop"
+        id="custom-modal-backdrop"
+        aria-label="Close"
+      ></button>
+      <div
+        class="word-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="custom-modal-title"
+      >
+        <button
+          type="button"
+          class="word-modal-close"
+          id="custom-modal-close"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+        <div class="word-modal-word custom-modal-title" id="custom-modal-title">
+          Start with letters
+        </div>
+        <p class="custom-modal-sub">
+          Type up to 7 letters to preload into your hand. Use _ for a blank tile.
+        </p>
+        <input
+          id="custom-input"
+          class="custom-input"
+          type="text"
+          maxlength="7"
+          autocomplete="off"
+          spellcheck="false"
+          autocapitalize="characters"
+          inputmode="text"
+          aria-label="Letters to preload into your hand"
+          placeholder="e.g. Q_Z"
+        />
+        <p class="custom-error" id="custom-error"></p>
+        <button type="button" id="custom-submit" class="custom-submit">
+          Start game
+        </button>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <footer class="wrapper">
+      <div class="credits">
+        <span class="credits left">
+          <a
+            href="{{ site.github.owner_url | default: 'https://github.com/mpickfield' }}"
+          >
+            <i class="fas fa-pencil-alt"></i>
+            {{ site.display_name | default: site.title }}
+          </a>
+          ·
+          <a href="{{ 'feed.xml' | relative_url }}" title="RSS feed"
+            ><i class="fas fa-rss"></i> Feed</a
+          >
+        </span>
+        <span class="credits right"
+          >Hosted on GitHub Pages; theme by
+          <a href="https://twitter.com/mattgraham">mattgraham</a></span
+        >
+      </div>
+    </footer>
+
+    <script>
+      window.DOJO_CONFIG = {
+        dictionaryUrl: "{{ '/assets/data/dictionary.txt' | relative_url }}"
+      };
+    </script>
+    <script src="{{ '/assets/js/sortable.min.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/scrabble-dojo.js' | relative_url }}"></script>
+  </body>
+</html>
