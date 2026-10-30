@@ -11,7 +11,7 @@
     />
     <link
       rel="stylesheet"
-      href="{{ '/assets/css/scrabble-dojo.css' | relative_url }}"
+      href="{{ '/assets/css/scrabble-dojo.css?v=' | append: site.github.build_revision | relative_url }}"
     />
     <link
       rel="stylesheet"
@@ -246,10 +246,11 @@
 
     <script>
       window.DOJO_CONFIG = {
-        dictionaryUrl: "{{ '/assets/data/dictionary.txt' | relative_url }}"
+        dictionaryUrl: "{{ '/assets/data/dictionary.txt' | relative_url }}",
+        version: "{{ site.github.build_revision }}"
       };
     </script>
-    <script src="{{ '/assets/js/sortable.min.js' | relative_url }}"></script>
-    <script src="{{ '/assets/js/scrabble-dojo.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/sortable.min.js?v=' | append: site.github.build_revision | relative_url }}"></script>
+    <script src="{{ '/assets/js/scrabble-dojo.js?v=' | append: site.github.build_revision | relative_url }}"></script>
   </body>
 </html>

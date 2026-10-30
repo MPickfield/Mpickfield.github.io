@@ -36,6 +36,11 @@
 
   var cfg = window.DOJO_CONFIG || {};
   var dictionaryUrl = cfg.dictionaryUrl || '/assets/data/dictionary.txt';
+  // Cache-bust the dictionary with the deploy revision so browsers always pick
+  // up a fresh word list after an update.
+  if (cfg.version) {
+    dictionaryUrl += (dictionaryUrl.indexOf('?') === -1 ? '?' : '&') + 'v=' + encodeURIComponent(cfg.version);
+  }
 
   var state = {
     dict: null,            // Set of uppercase words
@@ -1158,30 +1163,50 @@
     }
   }
 
+  function startGame() {
+    var saved = loadGame();
+    if (saved) restoreGame(saved);
+    else newHand();
+  }
+
+  async function loadDictionary(url) {
+    var res = await fetch(url, { cache: 'no-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    var text = await res.text();
+    state.dict = new Set(
+      text.split(/\r?\n/)
+        .map(function (w) { return w.trim().toUpperCase(); })
+        .filter(function (w) { return w.length >= MIN_WORD_LEN; })
+    );
+  }
+
+  function showDictionaryError() {
+    el.foundList.innerHTML = '';
+    var p = document.createElement('p');
+    p.className = 'empty';
+    p.textContent = 'Could not load the dictionary. Please try again.';
+    el.foundList.appendChild(p);
+  }
+
   async function init() {
     cacheDom();
     bind();
     renderBlanksToggle();
     renderCompletedCount();
     try {
-      var res = await fetch(dictionaryUrl);
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      var text = await res.text();
-      state.dict = new Set(
-        text.split(/\r?\n/)
-          .map(function (w) { return w.trim().toUpperCase(); })
-          .filter(function (w) { return w.length >= MIN_WORD_LEN; })
-      );
-      var saved = loadGame();
-      if (saved) restoreGame(saved);
-      else newHand();
+      await loadDictionary(dictionaryUrl);
+      startGame();
     } catch (err) {
-      el.foundList.innerHTML = '';
-      var p = document.createElement('p');
-      p.className = 'empty';
-      p.textContent = 'Could not load the dictionary. Please try again.';
-      el.foundList.appendChild(p);
-      if (window.console) console.error('Scrabble Dojo: failed to load dictionary', err);
+      // The cached copy may be stale or missing; retry once with a unique
+      // query string to force a full reload.
+      var retryUrl = dictionaryUrl + (dictionaryUrl.indexOf('?') === -1 ? '?' : '&') + '_=' + Date.now();
+      try {
+        await loadDictionary(retryUrl);
+        startGame();
+      } catch (err2) {
+        showDictionaryError();
+        if (window.console) console.error('Scrabble Dojo: failed to load dictionary', err2);
+      }
     }
   }
 
