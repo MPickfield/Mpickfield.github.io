@@ -16,6 +16,19 @@
     Z: [1, 10]
   };
 
+  // Celebration words for a correct play, ordered mild -> exuberant.
+  // High-value letters (5 points or more) draw from a more exciting pool,
+  // and longer words reach toward the more exuberant end of each pool.
+  var PRAISE_NORMAL = [
+    'Nice!', 'Sweet!', 'Good one!', 'Nice find!', 'Great!',
+    'Well played!', 'Solid!', 'Good job!', 'Excellent!', 'Brilliant!'
+  ];
+  var PRAISE_HIGH_VALUE = [
+    'Wow!', 'Amazing!', 'Fantastic!', 'Tremendous!', 'Splendid!',
+    'Spectacular!', 'Magnificent!', 'Incredible!', 'Outstanding!', 'Phenomenal!'
+  ];
+  var HIGH_VALUE_MIN = 5;
+
   var HAND_SIZE = 7;
   var MIN_WORD_LEN = 2;
   var BLANK = '_';
@@ -355,6 +368,27 @@
     render();
   }
 
+  // A high-value play uses any letter worth HIGH_VALUE_MIN points or more.
+  function hasHighValueLetter(word) {
+    for (var i = 0; i < word.length; i++) {
+      var info = TILE_DIST[word.charAt(i)];
+      if (info && info[1] >= HIGH_VALUE_MIN) return true;
+    }
+    return false;
+  }
+
+  // Pick a celebration word. High-value letters draw from the exuberant
+  // pool, and longer words celebrate higher-scoring plays with a word
+  // from closer to the excited end of whichever pool is chosen.
+  function pickPraise(word) {
+    var pool = hasHighValueLetter(word) ? PRAISE_HIGH_VALUE : PRAISE_NORMAL;
+    var t = (word.length - MIN_WORD_LEN) / (HAND_SIZE - MIN_WORD_LEN);
+    var idx = Math.round(t * (pool.length - 1));
+    idx += Math.floor(Math.random() * 3) - 1; // small jitter for variety
+    idx = Math.max(0, Math.min(pool.length - 1, idx));
+    return pool[idx];
+  }
+
   function submit() {
     var unassigned = state.tray.some(function (t) { return t.isBlank && !t.assigned; });
     if (unassigned) {
@@ -381,7 +415,7 @@
     }
     state.found.add(word);
     if (state.hints.has(word)) state.hints.delete(word);
-    toast('Nice! ' + word + ' (' + score + ' pts)');
+    toast(pickPraise(word) + ' ' + word + ' (' + score + ' pts)');
     clearTray();
     if (state.found.size >= state.target.length) completeHand();
   }
@@ -392,7 +426,7 @@
   function makeHintPattern(word, revealed) {
     var chars = [];
     for (var i = 0; i < word.length; i++) {
-      chars.push(i < revealed ? word.charAt(i).toLowerCase() : '_');
+      chars.push(i < revealed ? word.charAt(i) : '_');
     }
     return chars.join('');
   }
@@ -752,13 +786,7 @@
     renderFound();
     renderProgress();
     renderHintState();
-    renderDailySubtitle();
     saveGame();
-  }
-
-  function renderDailySubtitle() {
-    el.dailySubtitle.textContent =
-      state.mode === 'daily' && state.dailyDate ? state.dailyDate + ' daily game' : '';
   }
 
   function renderHintState() {
@@ -949,7 +977,6 @@
     el.customError = document.getElementById('custom-error');
     el.customSubmit = document.getElementById('custom-submit');
     el.completedCount = document.getElementById('completed-count');
-    el.dailySubtitle = document.getElementById('daily-subtitle');
   }
 
   function bind() {

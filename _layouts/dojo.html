@@ -28,25 +28,13 @@
   </head>
 
   <body class="dojo-page">
-    <div id="header">
-      <nav>
-        <ul>
-          <li>
-            <a href="{{ '/' | relative_url }}" class="back-link">
-              <i class="fas fa-home"></i> Home
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-
     <div class="wrapper">
       <section>
         <main class="dojo-app">
           <header class="dojo-header">
             <div class="dojo-header-title">
               <h1>Scrabble Dojo</h1>
-              <p class="dojo-subtitle">Anagram Trainer: find every word in your hand!</p>
+              <p class="dojo-subtitle">Anagrams: find every word in your hand!</p>
             </div>
             <div class="dojo-menu-wrap" id="dojo-menu-wrap">
               <button
@@ -72,13 +60,21 @@
                 <button type="button" class="dojo-menu-item" id="btn-toggle-blanks" role="menuitemcheckbox" aria-checked="false">
                   <i class="far fa-square toggle-icon" aria-hidden="true"></i> Include blanks
                 </button>
+                <a class="dojo-menu-item dojo-menu-link" href="{{ '/' | relative_url }}" role="menuitem">
+                  <i class="fas fa-home"></i> Home
+                </a>
               </div>
             </div>
           </header>
 
           <div class="dojo-progress">
             <div class="dojo-progress-text">
-              <strong id="found-count">0</strong> / <span id="total-count">0</span> found
+              <span class="dojo-progress-found">
+                <strong id="found-count">0</strong> / <span id="total-count">0</span> found
+              </span>
+              <span class="dojo-progress-completed">
+                <strong id="completed-count">0</strong> 🏆
+              </span>
             </div>
             <div class="progress-bar">
               <div class="progress-fill" id="progress-fill"></div>
@@ -90,7 +86,7 @@
               <h2>Your words</h2>
               <div class="dojo-hint">
                 <span class="hint-count" id="hint-count"></span>
-                <button type="button" id="btn-hint" class="hint-btn">+hint</button>
+                <button type="button" id="btn-hint" class="hint-btn">Hint?</button>
               </div>
             </div>
             <div id="found-list"></div>
@@ -117,11 +113,8 @@
               <strong>Well done!</strong> You found all
               <strong class="success-count">0</strong> words in this hand.
             </div>
-          </div>
 
-          <div class="dojo-stats">
-            <p class="dojo-stats-line">You have completed <strong id="completed-count">0</strong> games.</p>
-            <p class="dojo-daily-subtitle" id="daily-subtitle"></p>
+            <div class="toast" id="toast" role="status" aria-live="polite"></div>
           </div>
         </main>
       </section>
@@ -241,29 +234,6 @@
         </button>
       </div>
     </div>
-
-    <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-    <footer class="wrapper">
-      <div class="credits">
-        <span class="credits left">
-          <a
-            href="{{ site.github.owner_url | default: 'https://github.com/mpickfield' }}"
-          >
-            <i class="fas fa-pencil-alt"></i>
-            {{ site.display_name | default: site.title }}
-          </a>
-          ·
-          <a href="{{ 'feed.xml' | relative_url }}" title="RSS feed"
-            ><i class="fas fa-rss"></i> Feed</a
-          >
-        </span>
-        <span class="credits right"
-          >Hosted on GitHub Pages; theme by
-          <a href="https://twitter.com/mattgraham">mattgraham</a></span
-        >
-      </div>
-    </footer>
 
     <script>
       window.DOJO_CONFIG = {

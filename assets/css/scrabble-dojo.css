@@ -1,7 +1,35 @@
 /* Scrabble Dojo — Game styles (dark, minimal, mobile-first) */
 
+/* ---------- Page layout: full-height game, board locked to bottom ----------
+   The game drops the blog's fixed header and footer, then turns the page
+   into a full-viewport flex column: header + progress stay at the top, the
+   word list scrolls in the middle, and the board is pinned to the bottom. */
+body.dojo-page {
+  padding-bottom: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+body.dojo-page .wrapper {
+  height: 100%;
+}
+
+body.dojo-page section {
+  margin: 0;
+  padding: 12px 0 0;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
 .dojo-app {
-  margin-top: 24px;
+  margin-top: 8px;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ---------- Header ---------- */
@@ -11,6 +39,7 @@
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 20px;
+  flex: none;
 }
 
 .dojo-header-title {
@@ -98,12 +127,23 @@
   color: #ffcc00;
 }
 
+/* "Home" link shares the menu-item styling but is an anchor */
+.dojo-menu-item.dojo-menu-link {
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
 /* ---------- Progress ---------- */
 .dojo-progress {
   margin-bottom: 20px;
+  flex: none;
 }
 
 .dojo-progress-text {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
   font-size: 14px;
   color: #ddd;
   margin-bottom: 6px;
@@ -112,6 +152,11 @@
 
 .dojo-progress-text strong {
   color: #ffcc00;
+}
+
+.dojo-progress-completed {
+  color: #999;
+  white-space: nowrap;
 }
 
 .progress-bar {
@@ -131,7 +176,18 @@
 
 /* ---------- Found words ---------- */
 .dojo-found {
-  margin-bottom: 22px;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+}
+
+#found-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .dojo-found-header {
@@ -140,6 +196,7 @@
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 10px;
+  flex: none;
 }
 
 .dojo-found h2 {
@@ -313,8 +370,8 @@
 
 /* ---------- Board: tray + hand ---------- */
 .dojo-board {
-  position: sticky;
-  bottom: 0;
+  position: relative;
+  flex: none;
   background: #1c1c1c; /* matches the theme's bottom gradient */
   padding: 10px 0;
   border-top: 1px solid #2a2a29;
@@ -544,39 +601,14 @@
   color: #ffcc00;
 }
 
-/* ---------- Stats footer ---------- */
-.dojo-stats {
-  margin-top: 18px;
-  text-align: center;
-  color: #999;
-  font-size: 13px;
-}
-
-.dojo-stats-line {
-  margin: 0;
-}
-
-.dojo-stats-line strong {
-  color: #ffcc00;
-  font-variant-numeric: tabular-nums;
-}
-
-.dojo-daily-subtitle {
-  margin: 6px 0 0 0;
-  color: #8a8a8a;
-  font-size: 12px;
-}
-
-.dojo-daily-subtitle:empty {
-  display: none;
-}
-
 /* ---------- Toast ---------- */
+/* Anchored to the board so every toast rises from the tile area and
+   hovers over the words briefly before sinking back down. */
 .toast {
-  position: fixed;
+  position: absolute;
   left: 50%;
-  bottom: 20px;
-  transform: translate(-50%, 20px);
+  bottom: calc(100% + 12px);
+  transform: translate(-50%, 16px);
   max-width: 90%;
   padding: 10px 18px;
   border-radius: 999px;
@@ -602,12 +634,15 @@
 }
 
 /* ---------- Word modal ---------- */
+/* Anchored to the top so the on-screen keyboard (opened by the custom
+   hand input) never covers the card; it drops down from above when shown. */
 .word-modal {
   position: fixed;
   inset: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding-top: 20px;
   z-index: 200;
 }
 
@@ -621,6 +656,7 @@
   border: none;
   background: rgba(0, 0, 0, 0.62);
   cursor: default;
+  animation: dojo-backdrop-in 0.2s ease;
 }
 
 .word-modal-card {
@@ -632,6 +668,27 @@
   background: #1c1c1c;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
   text-align: center;
+  animation: dojo-modal-in 0.22s ease;
+}
+
+@keyframes dojo-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes dojo-backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .word-modal-close {
@@ -913,5 +970,76 @@
     gap: 6px;
     padding: 6px;
     min-height: 60px; /* 44px tile + 12px padding + 4px border */
+  }
+}
+
+/* iPhone 12/13 mini + iPhone SE (2nd/3rd gen) @ 375px — shrink a bit
+   more so the full 7-tile rack still stays on a single row. */
+@media (max-width: 380px) {
+  .tile {
+    width: 42px;
+    height: 42px;
+  }
+  .tile .letter {
+    font-size: 19px;
+  }
+  .tile .value {
+    font-size: 8px;
+  }
+  .hand {
+    gap: 6px;
+  }
+  .tray {
+    gap: 6px;
+    padding: 6px;
+    min-height: 58px; /* 42px tile + 12px padding + 4px border */
+  }
+}
+
+/* Android / older small phones @ 360px */
+@media (max-width: 360px) {
+  .tile {
+    width: 40px;
+    height: 40px;
+  }
+  .tile .letter {
+    font-size: 18px;
+  }
+  .tile .value {
+    font-size: 7px;
+  }
+  .hand {
+    gap: 5px;
+  }
+  .tray {
+    gap: 5px;
+    padding: 5px;
+    min-height: 54px; /* 40px tile + 10px padding + 4px border */
+  }
+}
+
+/* iPhone SE (1st gen) / iPhone 5 @ 320px */
+@media (max-width: 340px) {
+  .tile {
+    width: 36px;
+    height: 36px;
+  }
+  .tile .letter {
+    font-size: 16px;
+  }
+  .tile .value {
+    font-size: 7px;
+  }
+  .hand {
+    gap: 5px;
+  }
+  .tray {
+    gap: 5px;
+    padding: 5px;
+    min-height: 50px; /* 36px tile + 10px padding + 4px border */
+  }
+  .dojo-board {
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }
