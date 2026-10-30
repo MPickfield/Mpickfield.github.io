@@ -621,6 +621,7 @@
       animation: 140,
       forceFallback: true,
       fallbackOnBody: true,
+      fallbackTolerance: 8, // require a real move before dragging, so a tap stays a tap
       ghostClass: 'tile-ghost',
       dragClass: 'tile-drag',
       chosenClass: 'tile-chosen',

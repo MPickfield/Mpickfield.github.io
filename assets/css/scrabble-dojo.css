@@ -4,11 +4,18 @@
    The game drops the blog's fixed header and footer, then turns the page
    into a full-viewport flex column: header + progress stay at the top, the
    word list scrolls in the middle, and the board is pinned to the bottom. */
+html {
+  /* Fill the OS safe-area strip (e.g. the iOS home-indicator bar) with the
+     page's dark background instead of the browser's default white. */
+  background: #1c1c1c;
+}
+
 body.dojo-page {
   padding-bottom: 0;
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
+  background: #1c1c1c; /* solid dark, matching the theme's bottom gradient */
 }
 
 body.dojo-page .wrapper {
