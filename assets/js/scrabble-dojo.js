@@ -351,8 +351,9 @@
   }
 
   function backspace() {
+    // Return the last played tile to the front of the hand.
     if (state.tray.length) {
-      state.hand.push(state.tray.pop());
+      state.hand.unshift(state.tray.pop());
       render();
     }
   }
@@ -968,7 +969,7 @@
     el.success = document.getElementById('success');
     el.toast = document.getElementById('toast');
     el.submit = document.getElementById('btn-submit');
-    el.clear = document.getElementById('btn-clear');
+    el.backspace = document.getElementById('btn-backspace');
     el.shuffle = document.getElementById('btn-shuffle');
     el.menuBtn = document.getElementById('btn-menu');
     el.menuPanel = document.getElementById('dojo-menu');
@@ -1000,7 +1001,7 @@
 
   function bind() {
     el.submit.addEventListener('click', submit);
-    el.clear.addEventListener('click', clearTray);
+    el.backspace.addEventListener('click', backspace);
     el.shuffle.addEventListener('click', shuffleHand);
     el.btnHint.addEventListener('click', openHintModal);
     el.menuBtn.addEventListener('click', function () {
