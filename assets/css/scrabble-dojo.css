@@ -666,7 +666,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
+  gap: 6px;
   margin-bottom: 12px;
 }
 
@@ -887,5 +887,31 @@
   }
   .tray {
     min-height: 76px; /* 56px tile + 16px padding + 4px border */
+  }
+}
+
+/* ---------- Narrow phones (e.g. Pixel 9 @ 412px) ----------
+   A full rack of 7 tiles must fit on one row. At 48px tiles with
+   8px gaps the rack needs 384px, but the full-bleed board only has
+   ~380px (and the tray, with its padding/border, even less). Shrink
+   the tiles and tighten the gaps so 7 tiles fit comfortably. */
+@media (max-width: 440px) {
+  .tile {
+    width: 44px;
+    height: 44px;
+  }
+  .tile .letter {
+    font-size: 20px;
+  }
+  .tile .value {
+    font-size: 8px;
+  }
+  .hand {
+    gap: 6px;
+  }
+  .tray {
+    gap: 6px;
+    padding: 6px;
+    min-height: 60px; /* 44px tile + 12px padding + 4px border */
   }
 }
