@@ -57,6 +57,7 @@
   var el = {};
   var toastTimer = null;
   var hintLocked = false;
+  var dragActive = false;
 
   var STORAGE_KEY_GAME = 'dojo.currentGame';
   var STORAGE_KEY_HANDS = 'dojo.completedHands';
@@ -541,8 +542,18 @@
     d.setAttribute('data-id', tile.id);
     d.setAttribute('aria-label', tileAriaLabel(tile, inTray));
 
-    if (tile.isBlank) {
-      d.addEventListener('click', function () { cycleBlank(tile.id); });
+    if (inTray) {
+      // Tapping a tile already in the play area: blanks cycle their letter.
+      if (tile.isBlank) {
+        d.addEventListener('click', function () { cycleBlank(tile.id); });
+      }
+    } else {
+      // Tapping a hand tile (without dragging) appends it to the end of the
+      // play area. Dragging still reorders tiles via SortableJS.
+      d.addEventListener('click', function () {
+        if (dragActive) return;
+        moveToTray(tile.id);
+      });
     }
 
     var letter = document.createElement('span');
@@ -613,9 +624,16 @@
       ghostClass: 'tile-ghost',
       dragClass: 'tile-drag',
       chosenClass: 'tile-chosen',
+      onStart: function () {
+        // A real drag (not a tap) is now in progress.
+        dragActive = true;
+      },
       onEnd: function () {
         // Defer until SortableJS has fully finished its drop cleanup.
         setTimeout(syncFromDom, 0);
+        // Keep the tap guard armed through the trailing click browsers fire
+        // after a drag, then disarm it so the next tap still works.
+        setTimeout(function () { dragActive = false; }, 300);
       }
     });
     state.sortables.push(s);
