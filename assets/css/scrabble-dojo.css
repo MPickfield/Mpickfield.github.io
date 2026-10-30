@@ -582,19 +582,30 @@ body.dojo-page section {
 }
 
 /* ---------- Success ---------- */
+/* When the hand is complete this replaces the whole play area: it overlays
+   the board at exactly the board's own size, so the layout never jumps. */
 .success {
+  position: absolute;
+  inset: 0;
   display: none;
-  margin: 18px 0 0 0;
-  padding: 14px 16px;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
   border: 1px solid #ffcc00;
   border-radius: 10px;
-  background: rgba(255, 204, 0, 0.08);
+  background: #1c1c1c;
   color: #eee;
   font-size: 15px;
+  text-align: center;
+  z-index: 5;
 }
 
 .success.show {
-  display: block;
+  display: flex;
+}
+
+.success-text {
+  margin: 0;
 }
 
 .success strong {
