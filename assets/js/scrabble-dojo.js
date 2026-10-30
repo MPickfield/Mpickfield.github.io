@@ -51,13 +51,16 @@
     blanksEnabled: false,  // include the two blank tiles in new hands
     mode: 'normal',        // 'normal' or 'daily'
     dailyDate: null,       // 'YYYY-MM-DD' when mode is 'daily'
-    handCompleted: false   // this hand has already been recorded as completed
+    handCompleted: false,  // this hand has already been recorded as completed
+    collapsedLengths: {},  // word-length -> true when its group is collapsed
+    completedLengths: {}   // word-length -> true once its check burst has shown
   };
 
   var el = {};
   var toastTimer = null;
   var hintLocked = false;
   var dragActive = false;
+  var lastCompletedCount = null;
 
   var STORAGE_KEY_GAME = 'dojo.currentGame';
   var STORAGE_KEY_HANDS = 'dojo.completedHands';
@@ -191,9 +194,23 @@
   }
 
   function renderCompletedCount() {
-    if (el.completedCount) {
-      el.completedCount.textContent = loadCompletedHands().length;
+    if (!el.completedCount) return;
+    var count = loadCompletedHands().length;
+    var increased = lastCompletedCount !== null && count > lastCompletedCount;
+    el.completedCount.textContent = count;
+
+    if (el.completedCheck) {
+      el.completedCheck.hidden = count === 0;
+      if (increased && count > 0) burstCompletedCheck();
     }
+    lastCompletedCount = count;
+  }
+
+  function burstCompletedCheck() {
+    if (!el.completedCheck) return;
+    var old = el.completedCheck.querySelector('.check-burst');
+    if (old) old.parentNode.removeChild(old);
+    addBurst(el.completedCheck);
   }
 
   function completeHand() {
@@ -241,6 +258,20 @@
     state.dailyDate = typeof data.dailyDate === 'string' ? data.dailyDate : null;
     state.target = computeTarget(state.hand);
     state.handCompleted = state.found.size >= state.target.length;
+    state.collapsedLengths = {};
+    state.completedLengths = {};
+    // Collapse (and pre-mark) any length that is already fully found so the
+    // check bursts don't replay when a saved game is restored.
+    var totals = {};
+    var foundCounts = {};
+    state.target.forEach(function (w) { totals[w.length] = (totals[w.length] || 0) + 1; });
+    state.found.forEach(function (w) { foundCounts[w.length] = (foundCounts[w.length] || 0) + 1; });
+    Object.keys(totals).forEach(function (len) {
+      if ((foundCounts[len] || 0) >= totals[len]) {
+        state.completedLengths[len] = true;
+        state.collapsedLengths[len] = true;
+      }
+    });
     renderBlanksToggle();
     render();
   }
@@ -315,6 +346,8 @@
     state.hints = new Map();
     state.hintCount = 0;
     state.target = target;
+    state.collapsedLengths = {};
+    state.completedLengths = {};
     render();
   }
 
@@ -340,6 +373,8 @@
     state.hints = new Map();
     state.hintCount = 0;
     state.target = target;
+    state.collapsedLengths = {};
+    state.completedLengths = {};
     render();
   }
 
@@ -677,6 +712,39 @@
     });
   }
 
+  function addBurst(parent) {
+    var burst = document.createElement('span');
+    burst.className = 'check-burst';
+    for (var i = 0; i < 8; i++) {
+      var bar = document.createElement('span');
+      bar.className = 'burst-bar';
+      burst.appendChild(bar);
+    }
+    parent.appendChild(burst);
+    setTimeout(function () {
+      if (burst.parentNode) burst.parentNode.removeChild(burst);
+    }, 550);
+  }
+
+  function makeCompletedCheck(animate) {
+    var wrap = document.createElement('span');
+    wrap.className = 'completed-check';
+    wrap.setAttribute('aria-hidden', 'true');
+
+    var icon = document.createElement('i');
+    icon.className = 'fas fa-check';
+    wrap.appendChild(icon);
+
+    if (animate) addBurst(wrap);
+    return wrap;
+  }
+
+  function toggleCollapse(len) {
+    if (state.collapsedLengths[len]) delete state.collapsedLengths[len];
+    else state.collapsedLengths[len] = true;
+    renderFound();
+  }
+
   function renderFound() {
     var listEl = el.foundList;
     var flashWord = state.hintFlash;
@@ -712,23 +780,47 @@
     }
 
     lengths.forEach(function (len) {
+      var foundLen = foundWords[len] || [];
+      var complete = foundLen.length >= totals[len];
+      var newlyComplete = complete && !state.completedLengths[len];
+      if (complete) state.completedLengths[len] = true;
+      if (newlyComplete) state.collapsedLengths[len] = true;
+
       var group = document.createElement('div');
       group.className = 'found-group';
+      if (state.collapsedLengths[len]) group.classList.add('collapsed');
 
       var header = document.createElement('h3');
       header.className = 'found-group-header';
-      header.textContent = len + ' Letters ';
+      header.setAttribute('role', 'button');
+      header.setAttribute('tabindex', '0');
+      header.setAttribute('aria-expanded', state.collapsedLengths[len] ? 'false' : 'true');
+
+      var label = document.createElement('span');
+      label.className = 'found-group-label';
+      label.textContent = len + ' Letters ';
+      header.appendChild(label);
 
       var count = document.createElement('span');
       count.className = 'found-group-count';
-      count.textContent = '(' + (foundWords[len] || []).length + '/' + totals[len] + ')';
+      count.textContent = '(' + foundLen.length + '/' + totals[len] + ')';
       header.appendChild(count);
+
+      if (complete) header.appendChild(makeCompletedCheck(newlyComplete));
+
+      header.addEventListener('click', function () { toggleCollapse(len); });
+      header.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' || ev.key === ' ') {
+          ev.preventDefault();
+          toggleCollapse(len);
+        }
+      });
       group.appendChild(header);
 
       // Merge found words and hints, sorted by the underlying word so a hint
       // is simply replaced in place when its word is played.
       var entries = [];
-      (foundWords[len] || []).forEach(function (w) {
+      foundLen.forEach(function (w) {
         entries.push({ word: w, text: w, isFound: true });
       });
       (hintedWords[len] || []).forEach(function (h) {
@@ -997,6 +1089,7 @@
     el.customError = document.getElementById('custom-error');
     el.customSubmit = document.getElementById('custom-submit');
     el.completedCount = document.getElementById('completed-count');
+    el.completedCheck = document.getElementById('completed-check');
   }
 
   function bind() {

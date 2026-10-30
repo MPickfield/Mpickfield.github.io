@@ -181,6 +181,61 @@ body.dojo-page section {
   transition: width 0.25s ease;
 }
 
+/* ---------- Completion check + star burst ---------- */
+.completed-check {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  color: #ffcc00;
+  line-height: 1;
+}
+
+.completed-check[hidden] {
+  display: none;
+}
+
+.completed-check .fa-check {
+  position: relative;
+  z-index: 1;
+}
+
+.check-burst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.burst-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 12px;
+  height: 3px;
+  margin: -1.5px 0 0 -6px;
+  border-radius: 999px;
+  background: #ffcc00;
+  animation: dojo-bar-burst 0.5s ease-out forwards;
+}
+
+.burst-bar:nth-child(1) { --angle: 0deg; }
+.burst-bar:nth-child(2) { --angle: 45deg; }
+.burst-bar:nth-child(3) { --angle: 90deg; }
+.burst-bar:nth-child(4) { --angle: 135deg; }
+.burst-bar:nth-child(5) { --angle: 180deg; }
+.burst-bar:nth-child(6) { --angle: 225deg; }
+.burst-bar:nth-child(7) { --angle: 270deg; }
+.burst-bar:nth-child(8) { --angle: 315deg; }
+
+@keyframes dojo-bar-burst {
+  0%   { transform: rotate(var(--angle)) translateX(0); opacity: 1; }
+  100% { transform: rotate(var(--angle)) translateX(15px); opacity: 0; }
+}
+
 /* ---------- Found words ---------- */
 .dojo-found {
   flex: 1 1 auto;
@@ -259,12 +314,34 @@ body.dojo-page section {
   margin: 0 0 6px 0;
   font-weight: 600;
   letter-spacing: 0.06em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.found-group-header:hover {
+  color: #aaa;
+}
+
+.found-group-header:focus {
+  outline: none;
+}
+
+.found-group-header:focus-visible {
+  outline: 2px solid #ffcc00;
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
 .found-group-count {
   color: #ffcc00;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0;
+}
+
+.found-group.collapsed .chips {
+  display: none;
 }
 
 .chips {
