@@ -244,6 +244,34 @@
       </div>
     </div>
 
+    <div class="word-modal" id="confirm-modal" hidden>
+      <button
+        type="button"
+        class="word-modal-backdrop"
+        id="confirm-modal-backdrop"
+        aria-label="Cancel"
+      ></button>
+      <div
+        class="word-modal-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="confirm-modal-title"
+      >
+        <div class="word-modal-word confirm-modal-title" id="confirm-modal-title">
+          Start a new game?
+        </div>
+        <p class="confirm-modal-sub">Progress will be lost.</p>
+        <div class="confirm-actions">
+          <button type="button" id="confirm-cancel" class="confirm-cancel">
+            Nevermind
+          </button>
+          <button type="button" id="confirm-ok" class="confirm-ok">
+            Start new game
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script>
       window.DOJO_CONFIG = {
         dictionaryUrl: "{{ '/assets/data/dictionary.txt' | relative_url }}",

@@ -66,6 +66,7 @@
   var hintLocked = false;
   var dragActive = false;
   var lastCompletedCount = null;
+  var pendingConfirm = null;
 
   var STORAGE_KEY_GAME = 'dojo.currentGame';
   var STORAGE_KEY_HANDS = 'dojo.completedHands';
@@ -390,6 +391,15 @@
     render();
   }
 
+  function moveToHand(id) {
+    var idx = state.tray.findIndex(function (t) { return t.id === id; });
+    if (idx === -1) return;
+    var tile = state.tray.splice(idx, 1)[0];
+    if (tile.isBlank) tile.assigned = '';
+    state.hand.unshift(tile);
+    render();
+  }
+
   function backspace() {
     // Return the last played tile to the front of the hand.
     if (state.tray.length) {
@@ -584,9 +594,15 @@
     d.setAttribute('aria-label', tileAriaLabel(tile, inTray));
 
     if (inTray) {
-      // Tapping a tile already in the play area: blanks cycle their letter.
+      // Tapping a tile already in the play area: blanks cycle their letter,
+      // while a letter tile returns to the hand.
       if (tile.isBlank) {
         d.addEventListener('click', function () { cycleBlank(tile.id); });
+      } else {
+        d.addEventListener('click', function () {
+          if (dragActive) return;
+          moveToHand(tile.id);
+        });
       }
     } else {
       // Tapping a hand tile (without dragging) appends it to the end of the
@@ -903,6 +919,7 @@
     renderFound();
     renderProgress();
     renderHintState();
+    renderDailyOption();
     saveGame();
   }
 
@@ -912,6 +929,12 @@
     el.hintCount.textContent = state.hintCount
       ? state.hintCount + (state.hintCount === 1 ? ' hint' : ' hints')
       : '';
+  }
+
+  function renderDailyOption() {
+    var isDaily = state.mode === 'daily';
+    el.btnDailyGame.disabled = isDaily;
+    el.btnDailyGame.title = isDaily ? 'Already playing a daily game' : '';
   }
 
   /* ---------------------------------------------------------------
@@ -1010,6 +1033,25 @@
   }
 
   /* ---------------------------------------------------------------
+   * Confirmation modal
+   * ------------------------------------------------------------- */
+  function openConfirm(onConfirm) {
+    pendingConfirm = onConfirm;
+    el.confirmModal.hidden = false;
+  }
+
+  function closeConfirm() {
+    pendingConfirm = null;
+    el.confirmModal.hidden = true;
+  }
+
+  function confirmYes() {
+    var fn = pendingConfirm;
+    closeConfirm();
+    if (fn) fn();
+  }
+
+  /* ---------------------------------------------------------------
    * Feedback
    * ------------------------------------------------------------- */
   function toast(msg, kind) {
@@ -1033,6 +1075,7 @@
     if (e.key === 'Escape') {
       e.preventDefault();
       if (!el.wordModal.hidden) closeWordModal();
+      else if (!el.confirmModal.hidden) closeConfirm();
       else if (!el.hintModal.hidden) closeHintModal();
       else if (!el.customModal.hidden) closeCustomModal();
       else clearTray();
@@ -1093,6 +1136,10 @@
     el.customInput = document.getElementById('custom-input');
     el.customError = document.getElementById('custom-error');
     el.customSubmit = document.getElementById('custom-submit');
+    el.confirmModal = document.getElementById('confirm-modal');
+    el.confirmModalBackdrop = document.getElementById('confirm-modal-backdrop');
+    el.confirmCancel = document.getElementById('confirm-cancel');
+    el.confirmOk = document.getElementById('confirm-ok');
     el.completedCount = document.getElementById('completed-count');
     el.completedCheck = document.getElementById('completed-check');
   }
@@ -1107,11 +1154,11 @@
     });
     el.btnNewGame.addEventListener('click', function () {
       setMenu(false);
-      newHand();
+      openConfirm(function () { newHand(); });
     });
     el.btnDailyGame.addEventListener('click', function () {
       setMenu(false);
-      newDailyHand();
+      openConfirm(function () { newDailyHand(); });
     });
     el.btnNewGameLetters.addEventListener('click', function () {
       setMenu(false);
@@ -1125,6 +1172,9 @@
     el.customModalClose.addEventListener('click', closeCustomModal);
     el.customModalBackdrop.addEventListener('click', closeCustomModal);
     el.customSubmit.addEventListener('click', startCustomHand);
+    el.confirmModalBackdrop.addEventListener('click', closeConfirm);
+    el.confirmCancel.addEventListener('click', closeConfirm);
+    el.confirmOk.addEventListener('click', confirmYes);
     el.customInput.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') {
         e.preventDefault();

@@ -140,6 +140,15 @@ body.dojo-page section {
   box-sizing: border-box;
 }
 
+.dojo-menu-item:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.dojo-menu-item:disabled:hover {
+  background: transparent;
+}
+
 /* ---------- Progress ---------- */
 .dojo-progress {
   margin-bottom: 20px;
@@ -1006,6 +1015,59 @@ body.dojo-page section {
 .custom-submit:disabled {
   opacity: 0.4;
   cursor: default;
+}
+
+/* ---------- Confirm modal ---------- */
+.confirm-modal-title {
+  font-size: 1.25em;
+}
+
+.confirm-modal-sub {
+  margin: 0 0 16px 0;
+  color: #999;
+  font-size: 14px;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.confirm-actions button {
+  flex: 1;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.confirm-cancel {
+  border: 1px solid #33333f;
+  background: #23232f;
+  color: #eee;
+}
+
+.confirm-cancel:hover {
+  background: #2a2a38;
+  border-color: #4a4a5a;
+}
+
+.confirm-ok {
+  border: 1px solid #ffcc00;
+  background: #ffcc00;
+  color: #111;
+  font-weight: 700;
+}
+
+.confirm-ok:hover {
+  background: #ffeb9b;
+  border-color: #ffeb9b;
 }
 
 /* ---------- Shake ---------- */
